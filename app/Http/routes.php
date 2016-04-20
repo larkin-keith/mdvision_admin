@@ -32,7 +32,7 @@
 | kernel and includes session state, CSRF protection, and more.
 |
 */
-Route::group(['middleware' => 'web', 'domain'=>config('domain.admin')], function () {
+Route::group(['middleware' => 'web', 'domain' => config('domain.admin')], function () {
 
     Route::auth();
     // 禁止访问redirect
