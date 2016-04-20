@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
 <div class="container">
@@ -31,21 +31,29 @@
                                 <div class="form-group">
                                     <label for="review">轮播背景图片</label>
                                     <div>
-                                        <image src="{{ $advertisement->banner ? $advertisement->banner->image : '' }}" width=180 height=135 id="banner-upload"/>
-                                        <input type="hidden" name="banner_id" value="{{ $advertisement->banner_id }}">
+                                        <image src="{{ $advertisement->banner_url ? $advertisement->banner_url : 'holder.js/180x135?text=点击上传图片 \n 1800x1350' }}" width=180 height=135 id="adsBanner"/>
+                                        <input type="hidden" name="banner_url" value="{{ $advertisement->banner_url }}">
                                         <span id="helpBlock" class="help-block">请上传1800x1350尺寸的图片。</span>
                                     </div>
                                 </div>
                                 
                                 <div class="form-group">
                                     <label for="content">选择文章</label>                            
-                                    <select class="form-control select-article " id="articles" name="articles[]" multiple="multiple"></select>
+                                    <select class="form-control select-article " name="articles" multiple="multiple">
+                                        @foreach ($articleSelect2Datas as $articleSelect2Data)
+                                            <option value="{{ $articleSelect2Data['id'] }}" selected title="{{ $articleSelect2Data['title'] }}"></option>
+                                        @endforeach
+                                    </select>
                                     <span id="helpBlock" class="help-block">请选择两篇首页文章。</span>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="content">选择产品</label>
-                                    <select class="form-control select-product" id="products" name="products[]" multiple="multiple"></select>
+                                    <select class="form-control select-product" name="products" multiple="multiple">
+                                        @foreach ($productSelect2Datas as $productSelect2Data)
+                                            <option value="{{ $productSelect2Data['id'] }}" selected title="{{ $productSelect2Data['title'] }}"></option>
+                                        @endforeach
+                                    </select>
                                     <!-- <p><input type="text" name="products[]" class="form-control select-product" placeholder="产品二" /></p>
                                     <p><input type="text" name="products[]" class="form-control select-product" placeholder="产品三" /></p>
                                     <p><input type="text" name="products[]" class="form-control select-product" placeholder="产品四" /></p> -->
@@ -71,10 +79,12 @@
 <script>
 $(function() {
 
-    $(".select-article").select2({
+    // $("#articles").val($(".select-article").val('').trigger("change"));
+    // $("#products").val($(".select-product").val('').trigger("change"));
+    // $(".select-article").val().trigger("change");
+    var onSelectArticles = $(".select-article").select2({
         placeholder: "请选择",
-        tags: true,
-        allowClear: true,
+        allowClear:true,
         ajax: {
             url: "/api/search/articles",
             dataType: 'json',
@@ -99,6 +109,7 @@ $(function() {
         },
         escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
         maximumSelectionLength: 2,
+        minimumInputLength:1,
         templateResult: function (data) {
             if (data.items != '') {
                 return data.title;
@@ -108,11 +119,10 @@ $(function() {
             return data.title;
         }
     });
-
-    $(".select-product").select2({
+// onSelectArticles.select2('val', "xxxx");
+    var onSelectProducts = $(".select-product").select2({
         placeholder: "请选择",
-        tags: true,
-        allowClear: true,
+        allowClear:true,
         ajax: {
             url: "/api/search/products",
             dataType: 'json',
@@ -136,6 +146,7 @@ $(function() {
             cache: true,
         },
         maximumSelectionLength:4,
+        minimumInputLength:1,
         escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
         templateResult: function (data) {
             if (data.items != '') {
@@ -145,15 +156,36 @@ $(function() {
         templateSelection: function (data, container) {
             return data.title;
         },
-        initSelection : function (element, callback) {
-            var data = [];
-            $(element.val()).each(function () {
-                data.push({id: this, title: this});
-            });
-            callback(data);
+    });
+    
+    // 图片上传
+    var uploader = new plupload.Uploader({
+        browse_button: 'adsBanner', // this can be an id of a DOM element or the DOM element itself
+        url: '/api/image/upload',
+        filters: {
+            max_file_size: '10mb',
+            mime_type: [{ title: "Image files", extensions: "jpg,png,jpeg" }]
         }
     });
 
+    uploader.bind('FilesAdded', function(up, files) {
+        uploader.start();
+    });
+
+    uploader.bind('FileUploaded', function(up, files, object) {
+        imageUpResponse(object.response);
+    });
+
+    var imageUpResponse = function (data) {
+        data = jQuery.parseJSON(data);
+        // console.log(data);
+        $("#adsBanner").attr('src', data.path);
+        $("input[name=banner_url]").val(data.path);
+    }
+
+    uploader.init();
+
+    // 表单验证
     $("#myform").validate({
         errorElement: 'span', //default input error message container
         errorClass: 'help-block help-block-error', // default input error message class
@@ -161,13 +193,13 @@ $(function() {
         ignore: '',
         rules: {
             title: "required",
-            articles: "required",
-            products: "required",
+            selectArticles: "required",
+            selectProducts: "required",
         },
         messages: {
             title: "标题不能为空",
-            articles: "请选择",
-            products: "请选择",
+            selectArticles: "请选择文章",
+            selectProducts: "请选择产品",
         },
         highlight: function (element) { // hightlight error inputs
             $(element)
@@ -183,7 +215,7 @@ $(function() {
         submitHandler: function(form) {
             var options = { 
                 type: $(form).attr('method'),
-                success: function(){
+                success: function() {
                     $('#advertisement-table').DataTable().ajax.reload( null, false );
                     window.history.go(-1);
                 }, 
@@ -194,9 +226,6 @@ $(function() {
             $(form).ajaxSubmit(options); 
         }
      });
-
-    $('.select-article').select2('data', [{'id':'1', text:'xxx'},{'id':'2', text:'xxxx'}]);
-
 });
 </script>
 @endpush

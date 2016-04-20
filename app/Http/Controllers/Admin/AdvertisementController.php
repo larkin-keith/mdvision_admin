@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use DB;
 use App\Advertisement;
+use App\Relation;
 use Validator;
 use Datatables;
 use Illuminate\Http\Request;
@@ -50,8 +52,30 @@ class AdvertisementController extends Controller
     public function edit($id)
     {
     	$advertisement = Advertisement::findOrFail($id);
+        $relationDatas = Relation::whereTargetId($id)->get();
+        $articleSelect2Datas = [];
+        $productSelect2Datas = [];
 
-    	return view('admin.advertisement.edit')->with('advertisement', $advertisement);
+        if (! $relationDatas->isEmpty()) {
+            foreach ($relationDatas as $relationData) {
+                if ($relationData->origin == 'articles') {
+                    $articleSelect2Datas[] = [
+                        'id' => $relationData->origin_id,
+                        'title' => $relationData->article->title
+                    ];
+                } elseif ($relationData->origin == 'products') {
+                    $productSelect2Datas[] = [
+                        'id' => $relationData->origin_id,
+                        'title' => $relationData->product->title
+                    ];
+                }
+            }
+        }
+
+    	return view('admin.advertisement.edit')
+            ->with('advertisement', $advertisement)
+            ->with('articleSelect2Datas', $articleSelect2Datas)
+            ->with('productSelect2Datas', $productSelect2Datas);
     }
 
     /**
@@ -61,17 +85,19 @@ class AdvertisementController extends Controller
      */
     public function update(Request $request, $id)
     {
-    	$datas = $request->only(['banner_id', 'title', 'carousels', 'articles', 'products']);
+        DB::transaction(function() use($request, $id) {
+        	$datas = $request->only(['banner_url', 'title', 'articles', 'products']);
+            $articles = explode(',', $datas['articles']);
+            $products = explode(',', $datas['products']);
 
-        // $datas['carousels'] = json_encode($datas['carousels']);
-        $datas['articles'] = json_encode($datas['articles']);
-        $datas['products'] = json_encode($datas['products']);
+            Advertisement::whereId($id)->update(['banner_url' => $datas['banner_url'], 'title' => $datas['title']]);
 
-    	if (Advertisement::whereId($id)->update($datas)) {
-    		return response()->json(['message' => 'Success']);
-    	}
+            Relation::whereTargetId($id)->delete();
+            Relation::ofStore('articles', $articles, 'advertisements', $id);
+            Relation::ofStore('products', $products, 'advertisements', $id);
+        });
 
-    	return response()->json(['message' => 'Failer'], 422);
+        return response()->json(['message' => 'Success']);
     }
 
     /**
@@ -91,10 +117,18 @@ class AdvertisementController extends Controller
      */
     public function store(Request $request)
     {
-    	$datas = $request->only(['banner_id', 'title', 'carousels', 'articles', 'products']);
-        $datas['status'] = "disable";
+        DB::transaction(function() use($request) {
+            $datas = $request->only(['banner_url', 'title', 'articles', 'products']);
+            $articles = explode(',', $datas['articles']);
+            $products = explode(',', $datas['products']);
 
-    	Advertisement::create($datas);
+            $advertisement = Advertisement::create($datas);
+    
+            Relation::ofStore('articles', $articles, 'advertisements', $advertisement->id);
+            Relation::ofStore('products', $products, 'advertisements', $advertisement->id);
+        });
+
+        return response()->json(['message' => 'Success']);
     }
 
     /**
@@ -104,13 +138,19 @@ class AdvertisementController extends Controller
      */
     public function destroy($id)
     {
-    	if (Advertisement::destroy($id)) {
-    		return response()->json(['message' => 'Success']);
-    	}
+    	DB::transaction(function() use($id) {
+            Advertisement::destroy($id);
+            Relation::whereTargetId($id)->delete();
+        });
 
-    	return response()->json(['message' => 'Failer'], 422);
+    	return response()->json(['message' => 'Success']);
     }
 
+    /**
+     * 启用或禁用
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function isEnableOrDisable($id)
     {
         Advertisement::where('id', '!=', $id)->update(['status' => 'disable']);

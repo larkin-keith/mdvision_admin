@@ -15,7 +15,7 @@ class CreateAdvertisementsTable extends Migration
         Schema::create('advertisements', function (Blueprint $table) {
             $table->increments('id');
             $table->char('title', 128);
-            $table->integer('banner_id');
+            $table->char('banner_url');
             // $table->text('carousels');
             // $table->text('articles');
             // $table->text('products');

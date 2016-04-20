@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
 <div class="container">
@@ -26,6 +26,15 @@
                                     <label for="title">标题</label>
                                     <input type="text" class="form-control" name="title" placeholder="Title" value="">
                                     <span id="helpBlock" class="help-block">请填写标题，方便列表查询。</span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="review">文章主要图片</label>
+                                    <div>
+                                        <image src="holder.js/175x125?text=点击上传图片 \n 350x250" width=175 height=125 id="mainImage"/>
+                                        <input type="hidden" name="main_image" value="">
+                                        <span id="helpBlock" class="help-block">请上传350x250尺寸的图片。</span>
+                                    </div>
                                 </div>
 
                                 <div class="form-group">
@@ -98,6 +107,33 @@ $(function() {
             $(form).ajaxSubmit(options); 
         }
      });
+
+    // 图片上传
+    var uploader = new plupload.Uploader({
+        browse_button: 'mainImage', // this can be an id of a DOM element or the DOM element itself
+        url: '/api/image/upload',
+        filters: {
+            max_file_size: '10mb',
+            mime_type: [{ title: "Image files", extensions: "jpg,png,jpeg" }]
+        }
+    });
+
+    uploader.bind('FilesAdded', function(up, files) {
+        uploader.start();
+    });
+
+    uploader.bind('FileUploaded', function(up, files, object) {
+        imageUpResponse(object.response);
+    });
+
+    var imageUpResponse = function (data) {
+        data = jQuery.parseJSON(data);
+        // console.log(data);
+        $("#mainImage").attr('src', data.path);
+        $("input[name=main_image]").val(data.path);
+    }
+
+    uploader.init();
 })();
 </script>
 @endpush

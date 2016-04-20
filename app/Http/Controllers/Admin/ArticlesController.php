@@ -61,7 +61,7 @@ class ArticlesController extends Controller
      */
     public function update(Request $request, $id)
     {
-    	$datas = $request->only(['title', 'infomation', 'content']);
+    	$datas = $request->only(['title', 'infomation', 'content', 'main_image']);
         
     	if (Article::whereId($id)->update($datas)) {
     		return response()->json(['message' => 'Success']);
@@ -87,7 +87,7 @@ class ArticlesController extends Controller
      */
     public function store(Request $request)
     {
-    	$datas = $request->only(['title', 'infomation', 'content']);
+    	$datas = $request->only(['title', 'infomation', 'content', 'main_image']);
 
     	Article::create($datas);
     }

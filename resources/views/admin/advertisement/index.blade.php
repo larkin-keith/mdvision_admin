@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
 <div class="container">
@@ -47,6 +47,8 @@ $(function() {
         processing: true,
         serverSide: true,
         ajax: '{!! route('advertisement.data') !!}',
+        // dom:' <"search"fl><"top">rt<"bottom"ip><"clear">',
+        order: [[0, 'desc']],
         columns: [
             { data: 'id', name: 'id' },
             { data: 'title', name: 'title' },

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
 <div class="container">
@@ -30,9 +30,9 @@
                                 <div class="form-group">
                                     <label for="review">图片</label>
                                     <div>
-                                        <image src="" width=180 height=135 id="image-upload"/>
-                                        <input type="hidden" name="image" value="{!! $products->image !!}">
-                                        <span id="helpBlock" class="help-block">请上传1800x1350尺寸的图片。</span>
+                                        <image src="{{ $products->image ? $products->image :'holder.js/185x125?text=点击上传图片 \n 370x250'}}" width=185 height=125 id="productImage"/>
+                                        <input type="hidden" name="image" value="{{ $products->image }}">
+                                        <span id="helpBlock" class="help-block">请上传370x250尺寸的图片。</span>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -97,6 +97,33 @@ $(function() {
             $(form).ajaxSubmit(options); 
         }
      });
+
+    // 图片上传
+    var uploader = new plupload.Uploader({
+        browse_button: 'productImage', // this can be an id of a DOM element or the DOM element itself
+        url: '/api/image/upload',
+        filters: {
+            max_file_size: '10mb',
+            mime_type: [{ title: "Image files", extensions: "jpg,png,jpeg" }]
+        }
+    });
+
+    uploader.bind('FilesAdded', function(up, files) {
+        uploader.start();
+    });
+
+    uploader.bind('FileUploaded', function(up, files, object) {
+        imageUpResponse(object.response);
+    });
+
+    var imageUpResponse = function (data) {
+        data = jQuery.parseJSON(data);
+        // console.log(data);
+        $("#productImage").attr('src', data.path);
+        $("input[name=image]").val(data.path);
+    }
+
+    uploader.init();
 })();
 </script>
 @endpush

@@ -11,6 +11,16 @@
 |
 */
 
+/*
+|--------------------------------------------------------------------------
+| 网站页面
+|--------------------------------------------------------------------------
+|
+| This route group applies the "web" middleware group to every route
+| it contains. The "web" middleware group is defined in your HTTP
+| kernel and includes session state, CSRF protection, and more.
+|
+*/
 
 /*
 |--------------------------------------------------------------------------
@@ -22,10 +32,12 @@
 | kernel and includes session state, CSRF protection, and more.
 |
 */
-
 Route::group(['middleware' => 'web', 'domain'=>config('domain.admin')], function () {
 
     Route::auth();
+    // 禁止访问redirect
+    Route::get('/register', function() { return redirect('/'); });
+
     Route::get('/', function () {
 	    return view('welcome');
 	});
@@ -41,7 +53,7 @@ Route::group(['middleware' => 'web', 'domain'=>config('domain.admin')], function
     Route::group(['prefix' => 'advertisement'], function () {
     	Route::get('/', 'Admin\AdvertisementController@index');
     	Route::get('/create', 'Admin\AdvertisementController@create');
-    	Route::post('/store', 'Admin\AdvertisementController@store');
+    	Route::post('/store', 'Admin\AdvertisementController@store')->name('advertisement.store');
     	Route::get('/datas', 'Admin\AdvertisementController@datas')->name('advertisement.data');
     	Route::get('/{id}', 'Admin\AdvertisementController@edit');
     	Route::put('/{id}', 'Admin\AdvertisementController@update')->name('advertisement.update');
@@ -78,6 +90,11 @@ Route::group(['middleware' => 'web', 'domain'=>config('domain.admin')], function
 	*/
     Route::group(['prefix' => 'api'], function () {
     	Route::get('/search/articles', 'Api\SearchController@articles');
-    	Route::get('/search/products', 'Api\SearchController@products');
+        Route::get('/search/products', 'Api\SearchController@products');
+    	Route::post('/image/upload', 'Api\CommontController@imageUpload');
     });
 });
+
+// Route::group(['middleware' => 'web'], function () {
+//     Route::get('/', 'Home\HomeController@index');
+// });

@@ -17,7 +17,6 @@ class CreateRelationsTable extends Migration
             $table->integer('origin_id');
             $table->char('target', 64);
             $table->integer('target_id');
-            $table->timestamps();
         });
     }
 

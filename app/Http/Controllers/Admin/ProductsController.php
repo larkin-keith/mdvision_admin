@@ -61,7 +61,7 @@ class ProductsController extends Controller
      */
     public function update(Request $request, $id)
     {
-    	$datas = $request->only(['title', 'infomation']);
+    	$datas = $request->only(['title', 'infomation', 'image']);
         
     	if (Product::whereId($id)->update($datas)) {
     		return response()->json(['message' => 'Success']);
@@ -87,7 +87,7 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-    	$datas = $request->only(['title', 'infomation']);
+    	$datas = $request->only(['title', 'infomation', 'image']);
 
     	Product::create($datas);
     }
