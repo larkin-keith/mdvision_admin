@@ -182,7 +182,7 @@
 	
 	<script type="text/javascript">
 	$(function() {
-		$(".banner").css({'background':'url({{ $advertisements ? $advertisements->banner_url : '' }}) center no-repeat', 'background-size':'cover', 'min-height':'700px'})
+		$(".banner").css({'background':'url({{ $advertisements ? $advertisements->banner_url : '' }}) center no-repeat', 'background-size':'cover'})
 	});
 	</script>
 	
