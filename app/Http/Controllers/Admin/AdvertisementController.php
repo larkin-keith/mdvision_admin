@@ -56,6 +56,9 @@ class AdvertisementController extends Controller
         $articleSelect2Datas = [];
         $productSelect2Datas = [];
 
+        $articleIds = implode(',', Relation::articles($id)->lists('origin_id')->toArray());
+        $productIds = implode(',', Relation::products($id)->lists('origin_id')->toArray());
+
         if (! $relationDatas->isEmpty()) {
             foreach ($relationDatas as $relationData) {
                 if ($relationData->origin == 'articles') {
@@ -75,7 +78,9 @@ class AdvertisementController extends Controller
     	return view('admin.advertisement.edit')
             ->with('advertisement', $advertisement)
             ->with('articleSelect2Datas', $articleSelect2Datas)
-            ->with('productSelect2Datas', $productSelect2Datas);
+            ->with('articleIds', $articleIds)
+            ->with('productSelect2Datas', $productSelect2Datas)
+            ->with('productIds', $productIds);
     }
 
     /**

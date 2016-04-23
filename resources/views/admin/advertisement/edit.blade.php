@@ -44,7 +44,8 @@
                                             <option value="{{ $articleSelect2Data['id'] }}" selected title="{{ $articleSelect2Data['title'] }}"></option>
                                         @endforeach
                                     </select>
-                                    <span id="helpBlock" class="help-block">请选择两篇首页文章。</span>
+                                    <input type="hidden" id="articles_ids" name="articles"/>
+                                    <span id="helpBlock" class="help-block">请选择2篇首页文章。</span>
                                 </div>
 
                                 <div class="form-group">
@@ -57,7 +58,8 @@
                                     <!-- <p><input type="text" name="products[]" class="form-control select-product" placeholder="产品二" /></p>
                                     <p><input type="text" name="products[]" class="form-control select-product" placeholder="产品三" /></p>
                                     <p><input type="text" name="products[]" class="form-control select-product" placeholder="产品四" /></p> -->
-                                    <span id="helpBlock" class="help-block">请选择四个产品。</span>
+                                    <input type="hidden" id="products_ids" name="products" />
+                                    <span id="helpBlock" class="help-block">请选择4个产品。</span>
                                 </div>
                                 
                             </div>
@@ -119,7 +121,19 @@ $(function() {
             return data.title;
         }
     });
+
 // onSelectArticles.select2('val', "xxxx");
+    $('#articles_ids').val("{{ $articleIds }}");
+    onSelectArticles.change(function() {
+        var value = $(this).select2("data");
+        var data = new Array();
+        $.each(value, function(i,val) { 
+            data[i] = val.id; 
+        });  
+
+        $('#articles_ids').val(data);
+    });
+
     var onSelectProducts = $(".select-product").select2({
         placeholder: "请选择",
         allowClear:true,
@@ -157,6 +171,16 @@ $(function() {
             return data.title;
         },
     });
+    $('#products_ids').val("{{ $productIds }}");
+    onSelectProducts.change(function() {
+        var value = $(this).select2("data");
+        var data = new Array();
+        $.each(value, function(i,val) { 
+            data[i] = val.id; 
+        });  
+        
+        $('#products_ids').val(data);
+    });
     
     // 图片上传
     var uploader = new plupload.Uploader({
@@ -193,13 +217,13 @@ $(function() {
         ignore: '',
         rules: {
             title: "required",
-            selectArticles: "required",
-            selectProducts: "required",
+            articles: "required",
+            products: "required",
         },
         messages: {
             title: "标题不能为空",
-            selectArticles: "请选择文章",
-            selectProducts: "请选择产品",
+            articles: "请选择文章",
+            products: "请选择产品",
         },
         highlight: function (element) { // hightlight error inputs
             $(element)

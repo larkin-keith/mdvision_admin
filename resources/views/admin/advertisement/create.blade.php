@@ -40,16 +40,18 @@
                                 <div class="form-group">
                                     <label for="content">选择文章</label>                            
                                     <select class="form-control select-article " name="articles" multiple="multiple"></select>
-                                    <span id="helpBlock" class="help-block">请选择两篇首页文章。</span>
+                                    <input type="hidden" id="articles_ids" name="articles"/>
+                                    <span id="helpBlock" class="help-block">请选择2篇首页文章。</span>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="content">选择产品</label>
                                     <select class="form-control select-product" name="products" multiple="multiple"></select>
+                                    <input type="hidden" id="products_ids" name="products" />
                                     <!-- <p><input type="text" name="products[]" class="form-control select-product" placeholder="产品二" /></p>
                                     <p><input type="text" name="products[]" class="form-control select-product" placeholder="产品三" /></p>
                                     <p><input type="text" name="products[]" class="form-control select-product" placeholder="产品四" /></p> -->
-                                    <span id="helpBlock" class="help-block">请选择四个产品。</span>
+                                    <span id="helpBlock" class="help-block">请选择4个产品。</span>
                                 </div>
                                 
                             </div>
@@ -70,6 +72,7 @@
 @push('scripts')
 <script>
 $(function() {
+    
     var onSelectArticles = $(".select-article").select2({
         placeholder: "请选择",
         ajax: {
@@ -107,6 +110,16 @@ $(function() {
         }
     });
 
+    onSelectArticles.change(function() {
+        var value = $(this).select2("data");
+        var data = new Array();
+        $.each(value, function(i,val) { 
+            data[i] = val.id; 
+        });  
+
+        $('#articles_ids').val(data);
+    });
+
     var onSelectProducts = $(".select-product").select2({
         placeholder: "请选择",
         ajax: {
@@ -142,6 +155,16 @@ $(function() {
         templateSelection: function (data, container) {
             return data.title;
         },
+    });
+
+    onSelectProducts.change(function() {
+        var value = $(this).select2("data");
+        var data = new Array();
+        $.each(value, function(i,val) { 
+            data[i] = val.id; 
+        });  
+        
+        $('#products_ids').val(data);
     });
 
     // 图片上传
