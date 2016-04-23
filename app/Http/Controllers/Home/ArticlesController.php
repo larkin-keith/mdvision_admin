@@ -13,6 +13,7 @@ class ArticlesController extends Controller
     public function index()
     {
     	$articles = Article::select('id', 'title', 'created_at', 'main_image', 'infomation')
+    		->orderBy('created_at', 'desc')
     		->simplePaginate(config('commont.articlesPagesize'));
 
     	return view('home.articles')->with('articles', $articles);
