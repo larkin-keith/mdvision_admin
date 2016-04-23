@@ -97,7 +97,7 @@ Route::group(['middleware' => 'web', 'domain' => config('domain.admin')], functi
 });
 
 Route::group(['middleware' => 'web'], function () {
-    Route::get('/index', 'Home\IndexController@index')->name('home.index');
+    Route::get('/', 'Home\IndexController@index')->name('home.index');
 
     Route::group(['prefix' => 'articles'], function () {
         Route::get('/', 'Home\ArticlesController@index')->name('home.articles.index');
