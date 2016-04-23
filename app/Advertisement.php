@@ -14,4 +14,9 @@ class Advertisement extends Model
     protected $fillable = [
         'title', 'banner_url'
     ];
+
+    public function scopeEnable($query)
+    {
+    	return $query->where('status', 'enable');
+    }
 }

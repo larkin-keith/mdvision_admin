@@ -25,6 +25,16 @@ class Relation extends Model
     	return $this->hasOne('App\Product', 'id', 'origin_id');
     }
 
+    public function scopeArticles($query, $id)
+    {
+        return $query->where('target_id', $id)->where('origin', 'articles');
+    }
+
+    public function scopeProducts($query, $id)
+    {
+        return $query->where('target_id', $id)->where('origin', 'products');
+    }
+
     public static function ofStore($origin, $originId, $target, $targetId)
     {
     	$relationDatas = [];

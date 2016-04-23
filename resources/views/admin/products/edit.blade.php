@@ -30,7 +30,7 @@
                                 <div class="form-group">
                                     <label for="review">图片</label>
                                     <div>
-                                        <image src="{{ $products->image ? $products->image :'holder.js/185x125?text=点击上传图片 \n 370x250'}}" width=185 height=125 id="productImage"/>
+                                        <image src="{{ $products->image ? $products->image :'holder.js/175x125?text=点击上传图片 \n 350x250'}}" width=185 height=125 id="productImage"/>
                                         <input type="hidden" name="image" value="{{ $products->image }}">
                                         <span id="helpBlock" class="help-block">请上传370x250尺寸的图片。</span>
                                     </div>

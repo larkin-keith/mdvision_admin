@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Article extends Model
 {
@@ -14,4 +15,10 @@ class Article extends Model
     protected $fillable = [
         'title', 'infomation', 'main_image', 'content'
     ];
+
+    // public function getCreatedAtAttribute($data)
+    // {
+    // 	$time = Carbon::create($data);
+    // 	return $time->toFormattedDateString();
+    // }
 }

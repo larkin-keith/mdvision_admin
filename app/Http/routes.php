@@ -32,6 +32,7 @@
 | kernel and includes session state, CSRF protection, and more.
 |
 */
+
 Route::group(['middleware' => 'web', 'domain' => config('domain.admin')], function () {
 
     Route::auth();
@@ -95,6 +96,21 @@ Route::group(['middleware' => 'web', 'domain' => config('domain.admin')], functi
     });
 });
 
-// Route::group(['middleware' => 'web'], function () {
-//     Route::get('/', 'Home\HomeController@index');
-// });
+Route::group(['middleware' => 'web'], function () {
+    Route::get('/index', 'Home\IndexController@index')->name('home.index');
+
+    Route::group(['prefix' => 'articles'], function () {
+        Route::get('/', 'Home\ArticlesController@index')->name('home.articles.index');
+        Route::get('/{id}', 'Home\ArticlesController@show')->name('home.articles.show');
+    });
+
+    Route::group(['prefix' => 'products'], function () {
+        Route::get('/', 'Home\ProductsController@index')->name('home.products.index');
+        Route::get('/{id}', 'Home\ProductsController@show')->name('home.products.show');
+    });
+
+    Route::get('/about', 'Home\AboutController@index')->name('home.about.index');
+    Route::get('/contact', 'Home\ContactController@index')->name('home.contact.index');
+    
+});
+
