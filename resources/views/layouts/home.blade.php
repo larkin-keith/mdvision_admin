@@ -13,7 +13,7 @@
 	<div class="header" id="home">
 		<div class="container">
 			<div class="logo">
-				<a href="index.html"><img src="{{ asset('images/logo-2.png') }}" alt=""></a>
+				<a href="/"><img src="{{ asset('images/logo-2.png') }}" alt=""></a>
 			</div>
 			<div class="navigation">
 			 <span class="menu"></span> 
