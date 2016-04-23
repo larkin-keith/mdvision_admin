@@ -101,7 +101,7 @@
 						<div class="clearfix"></div>
 					</div>
 				</div> -->
-				@if ($articles))
+				@if ($articles)
 					@forelse($articles as $article)
 						<div class="col-md-6 welcome-left">
 							<h3>{{ $article->article->title }}</h3>
