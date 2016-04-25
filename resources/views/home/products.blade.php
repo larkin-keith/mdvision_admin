@@ -10,7 +10,7 @@
 				<div class="gallery-1">
 					@forelse($products as $product)
 					<div class="col-md-3 gallery-left">
-						<a href="{{ $product->image }}">
+						<a href="{{ route('home.products.show', $product->id) }}">
 							<img class="lazyOwl" src="{{ $product->image }}" alt="{{ $product->title }}" />
 						</a>
 						<p>{{ $product->title }}</p>

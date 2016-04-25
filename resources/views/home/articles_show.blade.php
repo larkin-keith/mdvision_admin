@@ -15,11 +15,13 @@
 				</div>
 				<div class="blog-main-one">
 					<div class="blog-one">
+						@if ($article->main_image)
 						<img src="{{$article->main_image}}" alt="{{ $article->title }}" />
+						@endif
 						<h3> Infomation </h3>
 						<p>{{ $article->infomation }}</p>
 						<h3> Content </h3>
-						<p>{{ $article->content }}</p>
+						<p>{!! $article->content !!}</p>
 					</div>	
 					<div class="blog-comments">
 						<ul>

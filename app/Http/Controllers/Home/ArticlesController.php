@@ -21,7 +21,7 @@ class ArticlesController extends Controller
 
     public function show($id)
     {
-    	$article = Article::find($id);
+    	$article = Article::findOrFail($id);
 
     	return view('home.articles_show')->with('article', $article);
     }

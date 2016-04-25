@@ -32,13 +32,21 @@
                                     <div>
                                         <image src="holder.js/175x125?text=点击上传图片 \n 350x250" width=175 height=125 id="productImage"/>
                                         <input type="hidden" name="image" value="">
-                                        <span id="helpBlock" class="help-block">请上传370x250尺寸的图片。</span>
+                                        <span id="helpBlock" class="help-block">请上传370x250尺寸的图片</span>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="infomation">简要</label>
                                     <textarea class="form-control" rows="3" name="infomation" id="infomation" placeholder="Review..."></textarea>
                                     <span id="helpBlock" class="help-block">请填写产品简要。</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="content">内容</label>
+                                    <!-- 加载编辑器的容器 -->
+                                    <textarea id="container" name="content" >
+                                    </textarea>
+                                    <!-- <textarea class="form-control" id="content" name="content" rows="15" cols="80"></textarea> -->
+                                    <span id="helpBlock" class="help-block">请填写文章内容。</span>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -56,10 +64,18 @@
 @endsection
 
 @push('scripts')
+<!-- 编辑器源码文件 -->
+<script src="{{ asset('js/ueditor.config.js') }}"></script>
+<script src="{{ asset('js/ueditor.all.min.js') }}"></script>
+
 <script>
 $(function() {
+    // 初始化编辑器
+    var ue = UE.getEditor('container');
 
-    $("#myform").validate({
+    var validator = $("#myform").submit(function(){
+        ue.sync();
+    }).validate({
         errorElement: 'span', //default input error message container
         errorClass: 'help-block help-block-error', // default input error message class
         focusInvalid: false, // do not focus the last invalid input
@@ -67,10 +83,13 @@ $(function() {
         rules: {
             title: "required",
             infomation: "required",
+            content: "required"
         },
         messages: {
             title: "标题不能为空",
             infomation: "简介不能为空",
+            content: "内容不能为空",
+
         },
         highlight: function (element) { // hightlight error inputs
             $(element)
@@ -124,6 +143,6 @@ $(function() {
     }
 
     uploader.init();
-})();
+});
 </script>
 @endpush

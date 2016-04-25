@@ -18,4 +18,11 @@ class ProductsController extends Controller
 
     	return view('home.products')->with('products', $products);
     }
+
+    public function show($id)
+    {
+    	$product = Product::findOrFail($id);
+
+    	return view('home.products_show')->with('product', $product);
+    }
 }

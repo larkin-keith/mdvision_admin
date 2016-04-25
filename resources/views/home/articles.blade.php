@@ -10,15 +10,19 @@
 		<div class="blog-top">
 			<div class="col-md-12 blog-one-left">
 				@forelse($articles as $article)
+				
 				<div class="blog-main-one">
+					
 					<div class="blog-one">
 						<div class="blog-title">
-							<a href="{{ route('home.articles.show', $article->id) }}" class="bg">{{ $article->active }}</a>
+							<a href="{{ route('home.articles.show', $article->id) }}" class="bg">{{ $article->title }}</a>
 						</div>
+						@if ($article->main_image)
 						<div class="col-md-5 blog-one-left">
 							<a href="{{ route('home.articles.show', $article->id) }}"><img src="{{ $article->main_image }}" alt="" /></a>
 						</div>
-						<div class="col-md-7 blog-one-left">
+						@endif
+						<div class="col-md-{{ $article->main_image ? 7 : 12 }} blog-one-left">
 							{{ str_limit($article->infomation, 180) }}
 							<div class="b-btn">
 								<a href="{{ route('home.articles.show', $article->id) }}">查看更多</a>
@@ -31,9 +35,10 @@
 							<li><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span><p>{{ $article->created_at->toFormattedDateString() }}</p></li>
 							<li><span class="glyphicon glyphicon-user" aria-hidden="true"></span><a href="#">管理员</a></li>
 						</ul>
-						<div class="clearfix"></div>
+						
 					</div>	
 				</div>
+				<div class="clearfix"></div>
 				@empty
 				@endforelse	
 			</div>

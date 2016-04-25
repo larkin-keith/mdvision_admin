@@ -33,18 +33,21 @@
                                     <div>
                                         <image src="{{ $articles->main_image ? $articles->main_image : 'holder.js/175x125?text=点击上传图片 \n 350x250' }}" width=175 height=125 id="mainImage"/>
                                         <input type="hidden" name="main_image" value="{{ $articles->main_image }}">
-                                        <span id="helpBlock" class="help-block">请上传350x250尺寸的图片。</span>
+                                        <span id="helpBlock" class="help-block">请上传350x250尺寸的图片。(可选)</span>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="infomation">简要</label>
                                     <textarea class="form-control" rows="3" name="infomation" id="infomation" placeholder="Review...">{!! $articles->infomation !!}</textarea>
+
                                     <span id="helpBlock" class="help-block">请填写文章简要。</span>
                                 </div>
                                 <div class="form-group">
                                     <label for="content">内容</label>
-                                    <textarea class="form-control" id="content" name="content" rows="15" cols="80">{!! $articles->content !!}</textarea>
+                                    <textarea id="container" name="content">
+                                    {!! $articles->content !!}
+                                    </textarea>
                                     <span id="helpBlock" class="help-block">请填写文章内容。</span>
                                 </div>
                                 
@@ -64,10 +67,18 @@
 @endsection
 
 @push('scripts')
+<!-- 编辑器源码文件 -->
+<script src="{{ asset('js/ueditor.config.js') }}"></script>
+<script src="{{ asset('js/ueditor.all.min.js') }}"></script>
+
 <script>
 $(function() {
+    // 初始化编辑器
+    var ue = UE.getEditor('container');
 
-    $("#myform").validate({
+    var validator = $("#myform").submit(function(){
+        ue.sync();
+    }).validate({
         errorElement: 'span', //default input error message container
         errorClass: 'help-block help-block-error', // default input error message class
         focusInvalid: false, // do not focus the last invalid input
@@ -134,6 +145,6 @@ $(function() {
     }
 
     uploader.init();
-})();
+});
 </script>
 @endpush

@@ -106,7 +106,7 @@
     <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('js/holder.min.js') }}"></script>
     <script src="{{ asset('js/plupload.full.min.js') }}"></script>
-
+    
     <script type="text/javascript">
         $.ajaxSetup({
             headers: {
