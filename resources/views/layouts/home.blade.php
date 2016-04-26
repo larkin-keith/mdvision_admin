@@ -22,7 +22,7 @@
 					<li><a href="{{ route('home.about.index') }}" {{ Route::getCurrentRoute()->getName() == 'home.about.index' ? 'class=active' : '' }}>关于我们</a><span> </span></li>
 					<li><a href="{{ route('home.articles.index') }}" {{ Route::getCurrentRoute()->getName() == 'home.articles.index' ? 'class=active' : '' }}>行业新闻</a><span> </span></li>
 					<!-- <li><a href="">定制服务</a><span> </span></li> -->
-					<li><a href="{{ route('home.products.index') }}" {{ Route::getCurrentRoute()->getName() == 'home.products.index' ? 'class=active' : '' }}>产品展示</a><span> </span></li>
+					<li><a href="{{ route('home.products.index') }}" {{ Route::getCurrentRoute()->getName() == 'home.products.index' ? 'class=active' : '' }}>产品列表</a><span> </span></li>
 					<li><a href="{{ route('home.contact.index') }}" {{ Route::getCurrentRoute()->getName() == 'home.contact.index' ? 'class=active' : '' }}>联系我们</a><span> </span></li>
 				</ul>
 			</div>

@@ -4,7 +4,7 @@
 <div class="gallery">
 		<div class="container">
 			<div class="gallery-top heading">
-				<h1>产品展示</h1>
+				<h1>产品列表</h1>
 			</div>
 			<div class="gallery-bottom">
 				<div class="gallery-1">
