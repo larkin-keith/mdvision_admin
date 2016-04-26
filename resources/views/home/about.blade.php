@@ -5,11 +5,8 @@
 	<div class="container">
 		<div class="about-top heading">
 			<h1>关于我们</h1>
-			<h4>深圳市迈德威视科技有限公司是一家专业的工业相机供应商，专注于工业相机的研发、生产和销售。</h4>
-			<p>公司拥有雄厚的技术实力，提供各种接口(USB2.0/3.0, GIGE VGA/HDMI)的工业相机和相机订制开发服务。
-公司因产品性价比高、服务好，技术支持完善等受到广大自动化生产商和显微镜厂家的青睐。公司产品广泛应用于显微镜成像、机器视觉、工业检测、条码识别、生物医学、教学、智能交通、虹膜识别、新能源探测及科学研究等领域。
-态度决定一切，细节决定成败！客户的满意是我们最大的追求。
-诚邀各大自动化厂家、视觉软件开发商、镜头厂商、光源厂商建立合作关系，携手共赢。</p>
+			<h4>{!! $about ? $about->title : '' !!}</h4>
+			{!! $about ? $about->content : '' !!}
 			<!-- <div class="about-bottom">
 				<div class="col-md-4 about-left">
 					<a href="single.html"><img src="/public/images/abt-1.jpg" alt="" /></a>

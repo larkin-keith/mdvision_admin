@@ -44,6 +44,7 @@ Route::group(['middleware' => 'web', 'domain' => config('domain.admin')], functi
 	});
 
     Route::get('/home', 'HomeController@index');
+    Route::post('/home', 'HomeController@store');
 
     /*
 	|--------------------------------------------------------------------------
@@ -110,7 +111,6 @@ Route::group(['middleware' => 'web'], function () {
     });
 
     Route::get('/about', 'Home\AboutController@index')->name('home.about.index');
-    Route::get('/contact', 'Home\ContactController@index')->name('home.contact.index');
-    
+    Route::get('/contact', 'Home\ContactController@index')->name('home.contact.index');    
 });
 

@@ -2,17 +2,40 @@
 
 @section('content')
 <!--contact-starts-->
+	<style type="text/css">
+		#allmap {width: 100%;height: 300px;}
+	</style>
 	<div class="contact">
 		<div class="container">
 			<div class="contact-top">
 				<div class="col-md-4 contact-left heading">
 					<h1>联系我们</h1>
-					<p>地址 ：深圳市龙岗区坂田上雪路华兴工业区.</p>
-					<p>电话 ：+86-0755-28376557.</p>
-					<p>邮箱 ：479245760@qq.com.</p>
+					<p>地址 ：{!! $contact ? $contact->address : '' !!}</p>
+					<p>电话 ：{!! $contact ? $contact->phone : '' !!}</p>
+					<p>邮箱 ：{!! $contact ? $contact->email : '' !!}</p>
 				</div>
 				<div class="col-md-8 contact-right">
-					<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d103344.96318068985!2d-83.9250825!3d35.9584634!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x885c162246ce42a9%3A0x7bea92dac4f534c5!2sKnoxville%2C+TN%2C+USA!5e0!3m2!1sen!2sin!4v1434174666221" frameborder="0" style="border:0"></iframe>
+					<div id="allmap"></div>
+					<script type="text/javascript">
+							//百度地图API功能
+							function loadJScript() {
+								var script = document.createElement("script");
+								script.type = "text/javascript";
+								script.src = "http://api.map.baidu.com/api?v=2.0&ak=28ebdd5aad9c3fe2846c67770191719d&callback=init";
+								document.body.appendChild(script);
+							}
+							function init() {
+								var map = new BMap.Map("allmap");            // 创建Map实例
+								var point = new BMap.Point(114.036935,22.616857); // 创建点坐标
+								map.centerAndZoom(point,15);                 
+								map.enableScrollWheelZoom();                 //启用滚轮放大缩小
+								var marker = new BMap.Marker(point);// 创建标注
+								map.addOverlay(marker);             // 将标注添加到地图中
+								marker.disableDragging();           // 不可拖拽	
+							}  
+							window.onload = loadJScript;  //异步加载地图
+
+					</script>
 				</div>
 				<div class="clearfix"></div>
 			</div>
