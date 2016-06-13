@@ -80,7 +80,7 @@
 		<div class="container">
 			<div class="welcome-top">
 				<h1>迈迪微视</h1>
-				<p> 深圳市迈德威视科技有限公司是一家专业的工业相机供应商，专注于工业相机的研发、生产和销售。
+				<p> 深圳市迈迪微视科技有限公司是一家专业的工业相机供应商，专注于工业相机的研发、生产和销售。
     公司拥有雄厚的技术实力，提供各种接口(USB2.0/3.0, GIGE VGA/HDMI)的工业相机和相机订制开发服务。
     公司因产品性价比高、服务好，技术支持完善等受到广大自动化生产商和显微镜厂家的青睐。公司产品广泛应用于显微镜成像、机器视觉、工业检测、条码识别、生物医学、教学、智能交通、虹膜识别、新能源探测及科学研究等领域。
     态度决定一切，细节决定成败！客户的满意是我们最大的追求。
@@ -146,17 +146,17 @@
 	</div>
 	<!--offer-ends--> 
 	<!--nature-starts--> 
-	<div class="nature">
+	<!-- <div class="nature">
 		<div class="container">
 			<div class="nature-top">
 				<h3>Maecenas ornare lobortis</h3>
 				<p>Phasellus tempor erat id erat gravida pulvinar. Aenean est felis, ullamcorper et volutpat sed, cursus at enim. Vestibulum vel finibus neque. In sed magna tellus.</p>
 			</div>
 		</div>
-	</div>
+	</div> -->
 	<!--nature-ends--> 
 	<!--field-starts--> 
-	<div class="fields">
+	<!-- <div class="fields">
 		<div class="container">
 			<div class="fields-top">
 				<div class="col-md-4 fields-left">
@@ -177,7 +177,7 @@
 				<div class="clearfix"></div>
 			</div>
 		</div>
-	</div>
+	</div> -->
 	@push('scripts')
 	
 	<script type="text/javascript">
